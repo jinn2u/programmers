@@ -1,12 +1,14 @@
-console.log("app is running!");
+import DarkModeBtn from "./DarkmodeBtn.js"
 
-class App {
+export default class App {
   $target = null;
   data = [];
 
   constructor($target) {
     this.$target = $target;
-
+    this.darkModeBtn = new DarkModeBtn({
+      $target
+    })
     this.searchInput = new SearchInput({
       $target,
       onSearch: keyword => {
@@ -31,9 +33,12 @@ class App {
         visible: false,
         image: null
       }
-    });
+    })
+
+
   }
 
+  
   setState(nextData) {
     console.log(this);
     this.data = nextData;
