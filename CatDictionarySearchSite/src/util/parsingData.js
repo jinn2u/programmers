@@ -1,3 +1,5 @@
+import { COLOR_LIGHT, COLOR_DARK } from "./Color.js"
+
 const LOCAL_DARK_KEY = 'user-color-scheme'
 
 export const DarkData = class{
@@ -16,9 +18,14 @@ export const DarkData = class{
     throw "_setData must override"
   }
   findDark(){
-    this.isDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      this.isDark = COLOR_DARK
+      return
+    }
+    this.isDark =  COLOR_LIGHT
   }
 }
+
 export const LocalData = class extends DarkData{
   constructor(key){
     super()
@@ -31,7 +38,7 @@ export const LocalData = class extends DarkData{
       LocalData.setData(this.isDark)
       return this.isDark
     } 
-    else return JSON.parse(value)
+    return JSON.parse(value)
   }
   static setData(value=this.isDark){
     localStorage.setItem(LOCAL_DARK_KEY,JSON.stringify(value))
