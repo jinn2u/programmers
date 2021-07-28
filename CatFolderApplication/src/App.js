@@ -18,7 +18,23 @@ export default function App($app) {
     $app,
     initialState: {
       isRoot: this.state.isRoot,
-      nodes: this.state.nodes
+      nodes: this.state.nodes,
+      onClick: async (node) => {
+        try {
+          if (node.type ==='DICTIONARY') {
+            const nextNodes = await request(node.id)
+            this.setState({
+              ...this.state,
+              depth: [...this.state.depth, node],
+              nodes: nextNodes
+            })
+          } else if (node.type === 'FILE') {
+            // 이미지 보기 처리하기
+          }
+        } catch (e) {
+
+        }
+      }
     }
   })
   this.setState = nextState => {
