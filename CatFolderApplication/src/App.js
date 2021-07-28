@@ -1,6 +1,7 @@
 import Nodes from "./components/Nodes.js"
 import { request } from "./api/api.js"
 import Breadcrumb from "./components/Breadcrumb.js"
+import ImageView from "./components/ImageView.js"
 
 const $app = document.querySelector(".app")
 
@@ -9,8 +10,12 @@ export default function App($app) {
     isRoot: false,
     nodes: [],
     depth: [],
-    selectedFilePath: null
+    selectedFilePath: ""
   }
+  const imageView = new ImageView({
+    $app,
+    initialState: ""
+  })
   const breadcrumb = new Breadcrumb({
     $app,
     initialState: this.state.depth
@@ -25,6 +30,7 @@ export default function App($app) {
       try {
         if (node.type ==='DIRECTORY') {
           const nextNodes = await request(node.id)
+          console.log(nextNodes)
           this.setState({
             ...this.state,
             isRoot: false,
@@ -32,11 +38,12 @@ export default function App($app) {
             nodes: nextNodes
           })
         } else if (node.type === 'FILE') {
+          console.log("yess",node.filePath)
           this.setState({
             ...this.state,
-            isRoot: false,
             selectedFilePath: node.filePath
           })
+          imageView.setState(this.state.selectedFilePath)
         }
       } catch (e) {
         throw "file or directory is invalid"
@@ -67,7 +74,6 @@ export default function App($app) {
       }
     }
   })
-
   this.setState = (nextState) => {
     this.state = nextState
     breadcrumb.setState(this.state.depth)

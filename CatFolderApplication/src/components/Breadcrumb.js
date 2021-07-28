@@ -10,7 +10,6 @@ export default function Breadcrumb({$app, initialState}) {
     this.render()
   }
   this.render = () => {
-    console.log(this.state, "bread")
     this.$target.innerHTML = `<div class="nav-items">root</div>${
       this.state.map((node, index) =>`
         <div class="nav-item" data-index=${index}>
