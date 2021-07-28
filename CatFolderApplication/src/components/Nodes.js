@@ -1,4 +1,4 @@
-export default function Nodes ({$app, initialState, onClick}) {
+export default function Nodes ({$app, initialState, onClick, onBackClick}) {
   this.state = initialState
   this.onClick = onClick
   this.$target = document.createElement('ul')
@@ -17,17 +17,17 @@ export default function Nodes ({$app, initialState, onClick}) {
             <img src=${iconPath} />
             <div>${node.name}</div>
           </div>
-          <div class="Node" data-node-id="${node.id}">  
-          <img src=${iconPath} />
-          <div>${node.name}</div>
-        </div>
         `
       }).join("")
       this.$target.innerHTML = !this.state.isRoot ?  `<div class="Node"><img src="/assets/prev.png"></div>${nodesTemplate}` : nodesTemplate
     }
     this.$target.querySelectorAll('.Node').forEach($node => {
       $node.addEventListener('click', e => {
-        const {nodeId} = e.target.dataset
+        console.log("clicked")
+        const {nodeId} = e.currentTarget.dataset
+        if(!nodeId) {
+          onBackClick()
+        }
         const selectedNode = this.state.nodes.find(node => node.id === nodeId)
         if(selectedNode){
           this.onClick(selectedNode)

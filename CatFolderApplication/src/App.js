@@ -42,6 +42,30 @@ export default function App($app) {
         throw "file or directory is invalid"
       }
     },
+    onBackClick: async () => {
+      try {
+        const nextState = { ...this.state }
+        nextState.depth.pop()
+        const prevNodeId = nextState.depth.length === 0 ? null : nextState.depth[nextState.depth.length-1].id
+        if(prevNodeId === null) {
+          const rootNodes = await request()
+          this.setState({
+            ...nextState,
+            isRoot: true,
+            nodes: rootNodes
+          })
+        } else {
+          const prevNodes = await request(prevNodeId)
+          this.setState({
+            ...nextNodes,
+            isRoot: false,
+            nodes: prevNodes
+          })
+        }
+      } catch (e) {
+        throw "backClick is wrong"
+      }
+    }
   })
 
   this.setState = (nextState) => {
