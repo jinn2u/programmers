@@ -20,4 +20,3 @@ export default function Breadcrumb({$app, initialState}) {
   }
   this.render()
 }
-
